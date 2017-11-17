@@ -1,0 +1,30 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply from: 'config/dependencies.gradle'
+buildscript {
+    ext.android_plugin_version = '2.3.0'
+
+    repositories {
+        google()
+        jcenter()
+
+        maven{
+            url 'repo'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.jh.plugin:aspectjPlugin:1.0.0'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
