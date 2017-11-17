@@ -175,25 +175,4 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends DaggerAppC
     @Override
     public void error(View.OnClickListener listener) {
     }
-
-    /**
-     * * 显示或隐藏StatusBar
-     *
-     * @param enable false 显示，true 隐藏
-     */
-    protected void hideStatusBar(Boolean enable) {
-        WindowManager.LayoutParams p = getWindow().getAttributes();
-        if (enable)
-        //|=：或等于，取其一
-        {
-            p.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        } else
-        //&=：与等于，取其二同时满足，     ~ ： 取反
-        {
-            p.flags &= (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
-        getWindow().setAttributes(p);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-    }
 }

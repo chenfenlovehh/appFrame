@@ -11,6 +11,7 @@ import com.jinghan.core.R;
 import com.jinghan.core.databinding.AtySplashBinding;
 import com.jinghan.core.dependencies.aspectj.annotation.Permission;
 import com.jinghan.core.helper.AndroidUtils;
+import com.jinghan.core.helper.BarHelper;
 import com.jinghan.core.mvp.view.activity.BaseActivity;
 import javax.inject.Inject;
 
@@ -29,7 +30,7 @@ public class SplashActivity extends BaseActivity<AtySplashBinding>{
     @Inject ISplashActivityPresenter presenter;
 
     @Override public void onCreate(Bundle savedInstanceState) {
-        fullScreen();
+        BarHelper.fullScreen(this);
         super.onCreate(savedInstanceState);
     }
 
@@ -41,7 +42,7 @@ public class SplashActivity extends BaseActivity<AtySplashBinding>{
     @Permission(value = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},isCallback = false)
     @Override
     protected void initViewsAndListener() {
-        hideStatusBar(true);
+
     }
 
     @Override public void initData() {
