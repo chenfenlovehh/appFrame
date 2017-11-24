@@ -150,7 +150,6 @@ dependencies {
     debugImplementation dep.leakcanaryAndroid
     releaseImplementation dep.leakcanaryAndroidNoOp
     testImplementation dep.leakcanaryAndroidNoOp
-
 }
 
 apply plugin: AspectjPlugin

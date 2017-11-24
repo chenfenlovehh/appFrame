@@ -50,7 +50,7 @@ public class CacheGlideModule implements GlideModule {
                     new DiskLruCacheFactory(Constant.GlideInfo.CACHE_PATH, Constant.GlideInfo.CACHE_SIZE)
             );
         }else{
-            builder.setDiskCache(new DiskLruCacheFactory(new File(context.getCacheDir(),"glide").getAbsolutePath(), Constant.GlideInfo.CACHE_SIZE));
+            builder.setDiskCache(new DiskLruCacheFactory(new File(context.getExternalCacheDir(),"glide").getAbsolutePath(), Constant.GlideInfo.CACHE_SIZE));
         }
     }
 }

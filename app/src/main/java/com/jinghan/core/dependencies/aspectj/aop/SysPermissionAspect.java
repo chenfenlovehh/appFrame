@@ -20,7 +20,7 @@ public class SysPermissionAspect {
 
     @Around("execution(@com.jinghan.core.dependencies.aspectj.annotation.Permission * *(..)) && @annotation(permission)")
     public void aroundJoinPoint(ProceedingJoinPoint joinPoint, Permission permission) {
-        Activity ac = AppContext.instance.currentActivity();
+        Activity ac = AppContext.getInstance().getLastActivityManager().getLastActivity();
 
         PermissionUtils.requestPermissionsResult(ac, 1,permission.value(), new PermissionUtils.OnPermissionListener() {
             @Override

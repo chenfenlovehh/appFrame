@@ -1,6 +1,5 @@
 package com.jinghan.app.mvp.view.activity;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
@@ -9,7 +8,6 @@ import com.jinghan.app.mvp.view.fragment.GuideFragment;
 import com.jinghan.app.mvp.view.fragment.SplashFragment;
 import com.jinghan.core.R;
 import com.jinghan.core.databinding.AtySplashBinding;
-import com.jinghan.core.dependencies.aspectj.annotation.Permission;
 import com.jinghan.core.helper.AndroidUtils;
 import com.jinghan.core.helper.BarHelper;
 import com.jinghan.core.mvp.view.activity.BaseActivity;
@@ -39,10 +37,9 @@ public class SplashActivity extends BaseActivity<AtySplashBinding>{
         return R.layout.aty_splash;
     }
 
-    @Permission(value = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},isCallback = false)
+//    @Permission(value = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},isCallback = false)
     @Override
     protected void initViewsAndListener() {
-
     }
 
     @Override public void initData() {

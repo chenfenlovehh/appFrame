@@ -52,6 +52,12 @@ public abstract class BaseActivity<B extends ViewDataBinding> extends DaggerAppC
         initData();
     }
 
+    /*protected void initToolbar(){
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }*/
+
     @CheckResult
     @Override
     public Observable<ActivityEvent> lifecycle() {

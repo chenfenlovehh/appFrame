@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.widget.TabHost;
 import com.jinghan.app.mvp.model.bean.CatalogInfo;
@@ -64,17 +65,6 @@ public class HomeFragment extends BaseFragment<FgHomeBinding> implements IHomeFr
 
 
     @Override public void updateBottomBars( ArrayList<CatalogInfo> catalogInfos) {
-
-        class TabInfo{
-            public TabInfo(TabHost.TabSpec tabSpec,Bundle bundle){
-                this.tabSpec = tabSpec;
-                this.bundle = bundle;
-            }
-
-            TabHost.TabSpec tabSpec;
-            Bundle bundle;
-        }
-
         Flowable.fromIterable(catalogInfos).map(info -> {
             TabHost.TabSpec tabSpec = mViewBinding.tabHost.newTabSpec(info.getJumpType());
 
@@ -88,7 +78,7 @@ public class HomeFragment extends BaseFragment<FgHomeBinding> implements IHomeFr
             bundle.putString("method", info.getMethod());
             bundle.putLong("id", info.getCatalogId());
 
-            return new TabInfo(tabSpec,bundle);
-        }).subscribe(tabData -> mViewBinding.tabHost.addTab(tabData.tabSpec, RecommendFragment.class, tabData.bundle) );
+            return new Pair<TabHost.TabSpec,Bundle>(tabSpec,bundle);
+        }).subscribe(tabData -> mViewBinding.tabHost.addTab(tabData.first, RecommendFragment.class, tabData.second) );
     }
 }

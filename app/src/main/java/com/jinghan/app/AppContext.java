@@ -9,6 +9,7 @@ import android.support.multidex.MultiDex;
 import com.facebook.stetho.Stetho;
 import com.jinghan.app.global.Constant;
 import com.jinghan.core.BuildConfig;
+import com.jinghan.core.crash.LastActivityManager;
 import com.jinghan.core.dependencies.dragger2.component.DaggerAppComponent;
 import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.CsvFormatStrategy;
@@ -17,6 +18,7 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 import com.orhanobut.logger.XDiskLogStrategy;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.Stack;
 
@@ -30,13 +32,12 @@ import dagger.android.DaggerApplication;
  */
 public class AppContext extends DaggerApplication {
 
-        public static AppContext instance;
+    private static AppContext instance;
 
-        /**
-         * 记录应用activity生命周期信息
-         * */
-        private Stack<Activity> store;
-
+    /**
+     * 最上面的activity管理器
+     * */
+    private LastActivityManager mLastActivityManager;
 
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
@@ -50,24 +51,30 @@ public class AppContext extends DaggerApplication {
         super.onCreate();
 
         instance = this;
-        LeakCanary.install(this);
+        mLastActivityManager = new LastActivityManager(this);
+
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
+            LeakCanary.install(this);
+        }
+
         initStetho();
         initLogger(BuildConfig.DEBUG);
-        registerLifecycle();
     }
 
-/**
- * 初始化stetho
- */
-private void initStetho() {
-    Stetho.initialize(
-            Stetho.newInitializerBuilder(this)
-                    .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                    .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
-                    .build());
-}
+    /**
+     * 初始化stetho
+     */
+    private void initStetho() {
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(Stetho.defaultInspectorModulesProvider(this))
+                        .build());
+    }
 
-    /**突破65535限制*/
+    /**
+     * 突破65535限制
+     */
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -75,57 +82,10 @@ private void initStetho() {
     }
 
     /**
-     * 注册activity生命周期查看信息
-     * */
-    private void registerLifecycle() {
-        store = new Stack();
-        registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
-            @Override
-            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                store.add(activity);
-            }
-
-            @Override
-            public void onActivityStarted(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityResumed(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityPaused(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivityStopped(Activity activity) {
-
-            }
-
-            @Override
-            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
-
-            }
-
-            @Override
-            public void onActivityDestroyed(Activity activity) {
-                store.remove(activity);
-            }
-        });
-    }
-
-    /**当前activity*/
-    public Activity currentActivity(){
-        return store.lastElement();
-    }
-
-    /**
      * 初始化日志信息
+     *
      * @param allowLog true记录日志
-    * */
+     */
     private void initLogger(boolean allowLog) {
         Logger.clearLogAdapters();
 
@@ -157,4 +117,11 @@ private void initStetho() {
         }
     }
 
+    public static AppContext getInstance() {
+        return instance;
+    }
+
+    public LastActivityManager getLastActivityManager() {
+        return mLastActivityManager;
+    }
 }

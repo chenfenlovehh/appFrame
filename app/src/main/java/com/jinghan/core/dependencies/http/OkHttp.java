@@ -35,10 +35,12 @@ public class OkHttp{
     private Context context;
     private static OkHttp instance;
     private OkHttpClient mOkHttpClient;
+    private RetrofitClient mRetrofitClient;
 
     @Inject
     public OkHttp(Context context){
         this.context = context;
+        mRetrofitClient = new RetrofitClient();
         init();
     }
 
@@ -71,7 +73,7 @@ public class OkHttp{
             if(PermissionUtils.checkStoragePermissions(context)){//是否有SD读写权限，有的话则缓存在SD中，没有话则缓存在内部存储文件中
                 builder.cache(new Cache(new File(Constant.HttpInfo.CACHE_PATH), Constant.HttpInfo.CACHE_SIZE));
             }else{
-                builder.cache(new Cache(new File(context.getCacheDir(),"http"), Constant.HttpInfo.CACHE_SIZE));
+                builder.cache(new Cache(new File(context.getExternalCacheDir(),"http"), Constant.HttpInfo.CACHE_SIZE));
             }
         }
 
@@ -119,6 +121,6 @@ public class OkHttp{
     }
 
     public RetrofitClient getClient(){
-        return new RetrofitClient();
+        return mRetrofitClient;
     }
 }
